@@ -3,6 +3,7 @@ import { Card } from "@repo/ui/card";
 import { Code } from "@repo/ui/code";
 import styles from "./page.module.css";
 import { Button } from "@repo/ui/button";
+import { getTodos, createTodo } from "database";
 
 function Gradient({
   conic,
@@ -51,7 +52,15 @@ const LINKS = [
   },
 ];
 
-export default function Page(): JSX.Element {
+export default async function Page(): Promise<JSX.Element> {
+
+  // await createTodo("Learning TurboRepo", "SiddOne");
+  // await createTodo("Learning Nextjs", "SiddOne");
+  // await createTodo("Learning Reactjs", "SiddOne");
+
+  const { todos = []} = await getTodos();
+  // console.log(todos)
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -141,6 +150,16 @@ export default function Page(): JSX.Element {
           <Card className={styles.card} href={href} key={title} title={title}>
             {description}
           </Card>
+        ))}
+      </div>
+
+      <div className="">
+        {todos.map((todo) => (
+          <div key={todo.id}>
+            <p> ToDo ID: {todo.id}</p>
+            <p>ToDo Title: {todo.title}</p>
+            <p>Todo. IsCreated: {todo.isCompleted}</p>
+          </div>
         ))}
       </div>
     </main>
